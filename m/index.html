@@ -96,6 +96,7 @@
     <a class="bouton principal" id="ouvrir-appli" href="#">💌 Ranger ce mot dans mon appli</a>
     <a class="bouton secondaire" id="installer" href="#">✨ Installer « Ma passion, mes rêves »</a>
     <p class="note">Un journal intime tout doux pour garder tes rêves, tes souvenirs et les mots doux qu’on t’envoie.</p>
+    <p class="note">🤖 Disponible sur Android · 🍎 Bientôt sur iPhone</p>
   </div>
 
   <div class="vide" id="vide" hidden>
@@ -225,6 +226,13 @@
       ? `intent://mot-doux?m=${code}#Intent;scheme=mapassion;package=${PAQUET_ANDROID};S.browser_fallback_url=${encodeURIComponent(LIEN_INSTALLATION)};end`
       : lienAppli;
     $('installer').href = LIEN_INSTALLATION;
+    // Pas encore d'appli iPhone : on le dit plutôt que d'envoyer vers un APK inutilisable
+    if (/iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+      $('ouvrir-appli').style.display = 'none';
+      $('installer').textContent = '🍎 Bientôt sur iPhone';
+      $('installer').removeAttribute('href');
+      $('installer').style.opacity = '0.7';
+    }
 
     let ouverte = false;
     $('enveloppe').addEventListener('click', () => {

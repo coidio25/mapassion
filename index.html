@@ -22,6 +22,11 @@
   a.bouton { display: inline-block; text-decoration: none; font-weight: 700; color: #fff; border-radius: 28px; padding: 15px 26px; background: linear-gradient(90deg, #8E5CC4, #E86FA8); box-shadow: 0 6px 16px rgba(232,111,168,.35); }
   small { opacity: .65; max-width: 360px; line-height: 1.5; }
   footer { margin-top: 12px; font-size: 12px; opacity: .55; }
+  .plateformes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .plateformes span { font-size: 13px; font-weight: 700; border-radius: 16px; padding: 6px 12px; }
+  .dispo { background: rgba(142,92,196,.35); border: 1px solid rgba(232,199,122,.5); }
+  .bientot { border: 1px dashed rgba(255,248,238,.45); opacity: .8; }
+  .iphone { font-size: 14px; background: rgba(255,255,255,.08); border-radius: 14px; padding: 12px 14px; }
 </style>
 </head>
 <body>
@@ -33,8 +38,18 @@
     <li>🌙 Tes rêves, tes listes de vie, tes notes vocales</li>
     <li>💌 Des mots doux à échanger avec tes amis</li>
   </ul>
+  <div class="plateformes">
+    <span class="dispo">🤖 Disponible sur Android</span>
+    <span class="bientot">🍎 Bientôt sur iPhone</span>
+  </div>
   <a class="bouton" href="ma-passion-mes-reves.apk" download>📲 Télécharger pour Android</a>
-  <small>Après le téléchargement, ouvre le fichier et accepte l’installation depuis cette source. Version iPhone bientôt 💜</small>
+  <small>Pour le moment, l’appli fonctionne uniquement sur Android. Après le téléchargement, ouvre le fichier et accepte l’installation depuis cette source.</small>
+  <p class="iphone" id="iphone" hidden>Tu es sur iPhone ? La version Apple arrive bientôt 💜<br>En attendant, les mots doux qu’on t’envoie s’ouvrent quand même ici, dans ton navigateur.</p>
   <footer>écrit avec 💜 par Alan Maxime · Burkina Faso</footer>
+  <script>
+    if (/iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+      document.getElementById('iphone').hidden = false;
+    }
+  </script>
 </body>
 </html>
