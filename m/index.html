@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Un mot doux pour toi 💌</title>
+<meta name="description" content="Quelqu’un t’a écrit un mot doux avec « Ma passion, mes rêves ».">
+<meta property="og:title" content="💌 Un mot doux t’attend">
+<meta property="og:description" content="Ouvre l’enveloppe pour le lire.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2A1240">
+<link rel="icon" href="../icone.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Great+Vibes&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nuit: #2A1240; --violet: #6B3FA0; --mauve: #8E5CC4; --or: #E8C77A; --rose: #E86FA8; --creme: #FFF8EE;
+    --papier1: #FFF0F7; --papier2: #FAD6EA; --encre: #A23A75;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { min-height: 100%; }
+  body {
+    font-family: 'Quicksand', system-ui, sans-serif; color: var(--creme);
+    background: radial-gradient(ellipse at top, #5B2F86 0%, var(--nuit) 60%) fixed, var(--nuit);
+    display: flex; flex-direction: column; align-items: center; padding: 28px 16px 40px; overflow-x: hidden;
+  }
+  .etoiles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .etoiles i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; opacity: .5; animation: scintille 3s ease-in-out infinite; }
+  @keyframes scintille { 50% { opacity: .1; transform: scale(.6); } }
+  main { position: relative; z-index: 1; width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+  h1 { font-family: 'Great Vibes', cursive; font-weight: 400; font-size: 40px; color: var(--or); text-align: center; line-height: 1.1; }
+  .sous-titre { font-size: 15px; opacity: .85; text-align: center; margin-top: -12px; }
+
+  /* Enveloppe */
+  .enveloppe { position: relative; width: 100%; height: 230px; cursor: pointer; border: 0; background: none; padding: 0; -webkit-tap-highlight-color: transparent; }
+  .enveloppe:focus-visible { outline: 2px dashed var(--or); outline-offset: 6px; border-radius: 12px; }
+  .moitie { position: absolute; inset: 0; border-radius: 14px; filter: drop-shadow(0 10px 18px rgba(0,0,0,.35)); transition: transform .8s cubic-bezier(.2,.7,.3,1), opacity .8s ease; }
+  .moitie svg { width: 100%; height: 100%; display: block; }
+  .ouverte .haut { transform: translate(-25%, -90px) rotate(-14deg); opacity: 0; }
+  .ouverte .bas { transform: translateY(50px); opacity: 0; transition-delay: .15s; }
+  .de { position: absolute; top: 26px; left: 0; right: 0; text-align: center; font-family: 'Great Vibes', cursive; font-size: 34px; color: var(--encre); transition: opacity .3s; }
+  .ouverte .de, .ouverte .nouveau { opacity: 0; }
+  .nouveau { position: absolute; top: 10px; right: 10px; background: var(--rose); color: #fff; font-weight: 700; font-size: 12px; border-radius: 10px; padding: 3px 9px; transition: opacity .3s; }
+  .invitation { font-weight: 700; font-size: 14px; color: var(--or); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .5; } }
+
+  /* Lettre */
+  .lettre {
+    position: relative; width: 100%; border-radius: 18px; padding: 22px; min-height: 220px; overflow: hidden;
+    background: linear-gradient(135deg, var(--papier1), var(--papier2)); color: var(--encre);
+    border: 1px solid rgba(107,63,160,.2); box-shadow: 0 14px 30px rgba(0,0,0,.35);
+    opacity: 0; transform: translateY(30px) scale(.96); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1);
+  }
+  .lettre.visible { opacity: 1; transform: none; }
+  .lettre .coeur { position: absolute; top: 12px; right: 14px; font-size: 20px; }
+  .lettre .humeur { display: block; text-align: center; font-size: 46px; margin-bottom: 6px; }
+  .citation { border-left: 3px solid currentColor; background: rgba(255,255,255,.35); border-radius: 6px; padding: 4px 10px; margin-bottom: 12px; font-size: 13px; }
+  .citation b { display: block; font-size: 12px; opacity: .8; }
+  .citation q { font-style: italic; opacity: .85; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .texte { font-family: 'Dancing Script', cursive; font-size: 25px; line-height: 1.4; text-align: center; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .signature { font-family: 'Great Vibes', cursive; font-size: 30px; text-align: right; margin-top: 12px; }
+
+  /* Actions */
+  .actions { width: 100%; display: none; flex-direction: column; gap: 12px; }
+  .actions.visible { display: flex; animation: apparait .6s ease both; }
+  @keyframes apparait { from { opacity: 0; transform: translateY(10px); } }
+  .bouton { display: block; text-align: center; text-decoration: none; font-weight: 700; font-size: 16px; border-radius: 28px; padding: 15px 20px; }
+  .principal { background: linear-gradient(90deg, var(--mauve), var(--rose)); color: #fff; box-shadow: 0 6px 16px rgba(232,111,168,.35); }
+  .secondaire { border: 1.5px solid rgba(232,199,122,.6); color: var(--or); }
+  .note { font-size: 13px; opacity: .75; text-align: center; line-height: 1.5; }
+  .vide { text-align: center; line-height: 1.6; }
+  .vide .grand { font-size: 56px; display: block; margin-bottom: 8px; }
+  footer { margin-top: 10px; font-size: 12px; opacity: .55; text-align: center; }
+  @media (prefers-reduced-motion: reduce) { .moitie, .lettre { transition-duration: .01s; } .invitation, .etoiles i { animation: none; } }
+</style>
+</head>
+<body>
+<div class="etoiles" aria-hidden="true"></div>
+<main>
+  <h1>Un mot doux pour toi</h1>
+  <p class="sous-titre" id="sous-titre">Quelqu’un a pensé à toi 💜</p>
+
+  <p class="invitation" id="chargement">💌 Le facteur arrive…</p>
+
+  <button class="enveloppe" id="enveloppe" type="button" hidden>
+    <div class="moitie bas"><svg id="svg-bas" viewBox="0 0 400 230" preserveAspectRatio="none"></svg></div>
+    <div class="moitie haut"><svg id="svg-haut" viewBox="0 0 400 230" preserveAspectRatio="none"></svg></div>
+    <span class="de" id="de"></span>
+    <span class="nouveau">Nouveau</span>
+  </button>
+  <p class="invitation" id="invitation" hidden>✂️ Touche l’enveloppe pour la déchirer</p>
+
+  <article class="lettre" id="lettre" hidden aria-live="polite"></article>
+
+  <div class="actions" id="actions">
+    <a class="bouton principal" id="ouvrir-appli" href="#">💌 Ranger ce mot dans mon appli</a>
+    <a class="bouton secondaire" id="installer" href="#">✨ Installer « Ma passion, mes rêves »</a>
+    <p class="note">Un journal intime tout doux pour garder tes rêves, tes souvenirs et les mots doux qu’on t’envoie.</p>
+  </div>
+
+  <div class="vide" id="vide" hidden>
+    <span class="grand">🕊️</span>
+    Ce mot doux s’est envolé…<br>Le lien est incomplet. Demande à la personne de te le renvoyer.
+  </div>
+</main>
+<footer>Ma passion, mes rêves · écrit avec 💜 par Alan Maxime</footer>
+
+<script>
+  // Remplis par scripts/preparer-site.mjs à partir de .env.local
+  const SUPABASE_URL = 'https://ljswetxaubngrfztwxxd.supabase.co';
+  const SUPABASE_CLE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqc3dldHhhdWJuZ3JmenR3eHhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyNjE3ODcsImV4cCI6MjEwODgzNzc4N30.IwR_dfM0ncgjawWkasrFd6hiDvQbLs_9HIVsOnALbu0';
+  // Lien d'installation de l'appli (page de téléchargement de l'APK, puis Play Store / App Store).
+  const LIEN_INSTALLATION = 'https://coidio25.github.io/mapassion/';
+  const PAQUET_ANDROID = 'com.mapassion.mesreves';
+
+  const papiers = {
+    rose:    { couleurs: ['#FFF0F7', '#FAD6EA'], encre: '#A23A75' },
+    lavande: { couleurs: ['#F6EEFC', '#DCC7F2'], encre: '#6B3FA0' },
+    creme:   { couleurs: ['#FFFBF0', '#FBEFC4'], encre: '#8A5A1E' },
+    nuit:    { couleurs: ['#3E1A60', '#6B3FA0'], encre: '#F3E3B5' },
+  };
+  const humeurs = { normal: '🙂', joie: '😄', amour: '😍', surprise: '😮', triste: '😢', colere: '😠', rire: '😂' };
+
+  const octets = (b64) => Uint8Array.from(atob(b64.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0));
+  const base64url = (texte) =>
+    btoa(String.fromCharCode(...new TextEncoder().encode(texte))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+  function nettoyer(m) {
+    if (typeof m?.texte !== 'string') return null;
+    return { de: String(m.de ?? ''), texte: m.texte.slice(0, 500), papier: String(m.papier ?? 'rose'), expression: m.expression ?? 'amour', reponseA: m.reponseA };
+  }
+
+  // Lien discret « #numéro.clé » : on récupère le bloc chiffré et on l'ouvre ici, dans le navigateur.
+  // La clé reste après le « # » : ni l'hébergeur de cette page ni le serveur ne la reçoivent.
+  async function ouvrirLienDiscret(id, cle) {
+    const rep = await fetch(`${SUPABASE_URL}/rest/v1/rpc/mpmr_lire_mot_partage`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_CLE, Authorization: `Bearer ${SUPABASE_CLE}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_id: id }),
+    });
+    const bloc = rep.ok ? await rep.json() : null;
+    if (typeof bloc !== 'string') return null;
+    const donnees = octets(bloc);
+    const k = await crypto.subtle.importKey('raw', octets(cle), 'AES-GCM', false, ['decrypt']);
+    const clair = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: donnees.slice(0, 12) }, k, donnees.slice(12));
+    return nettoyer(JSON.parse(new TextDecoder().decode(clair)));
+  }
+
+  // Anciens liens : le mot entier en base64 « url ».
+  function lireAncien(code) {
+    return nettoyer(JSON.parse(new TextDecoder().decode(octets(code))));
+  }
+
+  async function chargerMot() {
+    try {
+      const fragment = location.hash.slice(1);
+      const [id, cle] = fragment.split('.');
+      if (id && cle) return await ouvrirLienDiscret(id, cle);
+      const ancien = new URLSearchParams(fragment).get('m') || new URLSearchParams(location.search).get('m');
+      return ancien ? lireAncien(ancien) : null;
+    } catch { return null; }
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const etoiles = document.querySelector('.etoiles');
+  for (let i = 0; i < 28; i++) {
+    const e = document.createElement('i');
+    e.style.left = Math.random() * 100 + '%';
+    e.style.top = Math.random() * 100 + '%';
+    e.style.animationDelay = Math.random() * 3 + 's';
+    etoiles.appendChild(e);
+  }
+
+  chargerMot().then(afficher);
+
+  function afficher(mot) {
+  $('chargement').hidden = true;
+  if (!mot) {
+    $('vide').hidden = false;
+    $('sous-titre').hidden = true;
+    return;
+  }
+  {
+    const p = papiers[mot.papier] ?? papiers.rose;
+    document.documentElement.style.setProperty('--papier1', p.couleurs[0]);
+    document.documentElement.style.setProperty('--papier2', p.couleurs[1]);
+    document.documentElement.style.setProperty('--encre', p.encre);
+    const qui = mot.de || 'Quelqu’un';
+    document.title = `💌 Un mot doux de ${qui}`;
+    $('sous-titre').textContent = `${qui} a pensé à toi 💜`;
+    $('de').textContent = `De ${qui}`;
+
+    // Déchirure en dents de scie, comme dans l'appli
+    const y0 = 230 * 0.36, pas = 400 / 18, ligne = [];
+    for (let i = 0; i <= 18; i++) ligne.push(`${i * pas},${y0 + (i % 2 ? 7 : -5) + (i % 3) * 2}`);
+    $('svg-bas').innerHTML =
+      `<polygon points="${[...ligne, '400,230', '0,230'].join(' ')}" fill="${p.couleurs[1]}"/>` +
+      `<path d="M0 230 L200 143 L400 230" stroke="${p.encre}" stroke-opacity=".18" stroke-width="2" fill="none"/>` +
+      `<circle cx="200" cy="138" r="26" fill="#7B2E8E" stroke="#5E1F70" stroke-width="3"/>` +
+      `<text x="200" y="147" text-anchor="middle" font-size="24" fill="#F7D6E8">♡</text>`;
+    $('svg-haut').innerHTML =
+      `<polygon points="${['0,0', '400,0', ...ligne.slice().reverse()].join(' ')}" fill="${p.couleurs[0]}"/>` +
+      `<path d="M0 0 L200 ${y0 + 4} L400 0" stroke="${p.encre}" stroke-opacity=".15" stroke-width="2" fill="none"/>`;
+    $('enveloppe').setAttribute('aria-label', `Déchirer l’enveloppe de ${qui}`);
+    $('enveloppe').hidden = false;
+    $('invitation').hidden = false;
+
+    // Lettre (textContent partout : le contenu du lien n'est jamais interprété comme du HTML)
+    const lettre = $('lettre');
+    const el = (tag, cls, texte) => { const n = document.createElement(tag); if (cls) n.className = cls; if (texte != null) n.textContent = texte; return n; };
+    lettre.append(el('span', 'coeur', '💗'), el('span', 'humeur', humeurs[mot.expression] ?? '😍'));
+    if (mot.reponseA && typeof mot.reponseA.texte === 'string') {
+      const c = el('div', 'citation');
+      c.append(el('b', null, `↩️ En réponse à ${mot.reponseA.de || 'ton mot'}`), el('q', null, mot.reponseA.texte.slice(0, 200)));
+      lettre.append(c);
+    }
+    lettre.append(el('p', 'texte', mot.texte));
+    if (mot.de) lettre.append(el('p', 'signature', `— ${mot.de}`));
+
+    // Liens vers l'appli : sur Android, l'intent bascule vers l'installation si l'appli est absente.
+    const code = base64url(JSON.stringify(mot));
+    const lienAppli = `mapassion://mot-doux?m=${code}`;
+    const android = /android/i.test(navigator.userAgent);
+    $('ouvrir-appli').href = android
+      ? `intent://mot-doux?m=${code}#Intent;scheme=mapassion;package=${PAQUET_ANDROID};S.browser_fallback_url=${encodeURIComponent(LIEN_INSTALLATION)};end`
+      : lienAppli;
+    $('installer').href = LIEN_INSTALLATION;
+
+    let ouverte = false;
+    $('enveloppe').addEventListener('click', () => {
+      if (ouverte) return;
+      ouverte = true;
+      $('enveloppe').classList.add('ouverte');
+      $('invitation').hidden = true;
+      setTimeout(() => {
+        $('enveloppe').hidden = true;
+        lettre.hidden = false;
+        requestAnimationFrame(() => requestAnimationFrame(() => lettre.classList.add('visible')));
+        $('actions').classList.add('visible');
+      }, 750);
+    });
+  }
+  }
+</script>
+</body>
+</html>
